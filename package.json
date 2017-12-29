@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/mongo-batch",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "mongo batch stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-batch",
@@ -45,7 +45,10 @@
   },
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register", "babel-polyfill"]
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ]
   },
   "publishConfig": {
     "access": "public"
