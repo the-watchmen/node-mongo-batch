@@ -1,0 +1,27 @@
+import test from 'ava'
+import {getDb} from 'mongo-helpr'
+import {initDb} from 'mongo-test-helpr'
+import indexer from '../../../src/batch/indexer'
+
+test('indexer', async t => {
+  let db = await getDb()
+  await initDb(db)
+  const indexMap = {
+    indexMe: [
+      [{name: 1}, {unique: true}],
+      {'sumthin._id': 1}
+    ]
+  }
+  await indexer({indexMap})()
+  db = await getDb()
+  const result = await db.indexInformation('indexMe')
+  t.deepEqual(
+    result,
+    {
+      _id_: [['_id', 1]],
+      // eslint-disable-next-line camelcase
+      name_1: [['name', 1]],
+      'sumthin._id_1': [['sumthin._id', 1]]
+    }
+  )
+})

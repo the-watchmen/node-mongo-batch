@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- node
+services:
+- mongodb
+addons:
+  apt:
+    sources:
+    - mongodb-3.2-precise
+    packages:
+    - mongodb-org-server
+before_deploy:
+- npm run build
+deploy:
+  provider: npm
+  email: anthony.kerz@gmail.com
+  skip_cleanup: true
+  on:
+    branch: master
+    condition: "-z $TRAVIS_TAG"
+  api_key:
+    secure: NXpU/TamkWndNx1K8AHHNbRaW6RFeyr4r/m8xckwRCQA0pCUZZjflPJpF9OpqMDGGpQZz7BIj1B/Ydpl3K8YnNYmjPH7VtMS8BhMb1dY1Bnn91SHYQSmt+4p3jYdA7H5K2AgOo9uEUn8MHlUzYW1skB8B/cjJszEJjll/w19wo70H2bJPuczQ0odS3jvO/AR6OJpDbCJ5XCRNWI25BnBsO1+o1o9KurYZnCn06lHG6dFgAye9JatpVGlVf6L0FSH+cU1q30kIGMhDQhS0Ira4936HrEpVwz1QfInWQT4wz+5apZURNkjbz8dlhnT/gvbDaHqYaux7eQlQfJ6INtxkJRWVUPVlJfKeZYcvBgFR8C+DsR4tj1W4nGCRgOEuVkTvTkKQykV1o3Abm8Gy+m5gDjs4Ur5rzoGbsS6SeAQVstVPhQrVdp+rBvmXZ2hYDNEhXSQARrx/hWNILpDcsDrTaS3nHR8OIt+cVD8+x6gsJLH2L4AHuq/ATzSydNp738Mvy4DBrlHDewymITZsVOryzNJ9P/fIOzGT329VZng6ZbksBmVjznuycppMCNP4WzDc853CvZVgQ8RmpSDvvndJ15JqhYGNZK9r5PzaP4PE4u38pzwrqWVZbEbTwtpElZBEj+NRnuAlLjeOk+emyeA/fan4BsbYqcu1g5eOhe1iLA=
