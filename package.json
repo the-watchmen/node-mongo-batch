@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/mongo-batch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "mongo batch stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-batch",
