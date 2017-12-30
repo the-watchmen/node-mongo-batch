@@ -1,4 +1,4 @@
-import mongoSteps from 'mongo-cuke-helpr'
-import constants from '../../../../src/data/constants'
+import mongoSteps from '@watchmen/mongo-cuke-helpr'
+import constants from '../../../../src/constants'
 
 export default mongoSteps({constants})

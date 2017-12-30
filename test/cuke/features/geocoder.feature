@@ -35,7 +35,7 @@ Feature: geocoder
       When we run the '${BATCH}/geocoder' ingester with environment:
       """
       {
-        inputCollection: constants.CMS_PROVIDER_SOURCE
+        inputCollection: 'geocodeMe'
       }
       """
       Then mongo query "{}" on '${constants.GEO_ADDRESSES}' should be like:

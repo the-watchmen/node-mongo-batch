@@ -1,4 +1,4 @@
-import batchSteps from '../../../../src/batch/cuke/batch.steps'
-import constants from '../../../../src/data/constants'
+import batchSteps from '../../../../src/cuke/batch.steps'
+import constants from '../../../../src/constants'
 
-export default batchSteps({constants, BATCH: '../../../src/batch'})
+export default batchSteps({constants, BATCH: '../../src'})

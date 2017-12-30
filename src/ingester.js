@@ -2,19 +2,19 @@ import path from 'path'
 import assert from 'assert'
 import v8 from 'v8'
 import config from 'config'
-import debug from 'debug'
-import Timer from 'tymer'
 import _ from 'lodash'
-import {pretty, getArg, getJsonArg, deepClean, stringify} from '@watchmen/helpr'
-import {getDb, closeDb, createIndices} from 'mongo-helpr'
-import batchOpts from '../data/entities/batches'
-import batchFailureOpts from '../data/entities/batch-failures'
-import getData from '../data/data'
-import {onlyScanned} from '../data/helper'
+import debug from '@watchmen/debug'
+import Timer from '@watchmen/tymer'
+import {pretty, deepClean, stringify} from '@watchmen/helpr'
+import {getArg, getJsonArg} from '@watchmen/helpr/dist/args'
+import {getDb, closeDb, createIndices} from '@watchmen/mongo-helpr'
+import {getData, onlyScanned} from '@watchmen/mongo-data'
+import batchMeta from './entities/batches'
+import batchFailureMeta from './entities/batch-failures'
 
 const heapLimitMb = Math.trunc(v8.getHeapStatistics().heap_size_limit / 1e6)
-const batchData = getData(batchOpts)
-const batchFailureData = getData(batchFailureOpts)
+const batchData = getData(batchMeta)
+const batchFailureData = getData(batchFailureMeta)
 
 /* eslint-disable max-depth */
 
@@ -35,7 +35,8 @@ export default function({
   postIngestHook,
   query
 }) {
-  const dbg = debug(`app:batch:${path.basename(process.argv[1], '.js')}`)
+  // const dbg = debug(`app:batch:${path.basename(process.argv[1], '.js')}`)
+  const dbg = debug(process.argv[1])
 
   return async function() {
     const source = _.isFunction(sourceHook) ? await sourceHook() : sourceHook

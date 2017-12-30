@@ -1,8 +1,9 @@
-import debug from 'debug'
-import {getArg, splitAndTrim} from '@watchmen/helpr'
-import {createIndices, getDb, closeDb} from 'mongo-helpr'
+import debug from '@watchmen/debug'
+import {splitAndTrim} from '@watchmen/helpr'
+import {getArg} from '@watchmen/helpr/dist/args'
+import {createIndices, getDb, closeDb} from '@watchmen/mongo-helpr'
 
-const dbg = debug('app:indexer')
+const dbg = debug(__filename)
 
 const targets = splitAndTrim(getArg('targets'))
 targets && dbg('targets=%o', targets)

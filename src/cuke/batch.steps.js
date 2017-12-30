@@ -1,14 +1,15 @@
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import _ from 'lodash'
+import {defineSupportCode} from 'cucumber'
 import requireUncached from 'require-uncached'
 import {evalInContext, setState, asTemplate} from '@watchmen/test-helpr'
-import {setArgDefault} from '@watchmen/helpr'
+import {setArgDefault} from '@watchmen/helpr/dist/args'
 
-const dbg = debug('test:batch:steps')
+const dbg = debug(__filename)
 
 export default function(context) {
-  return function() {
-    this.When(/^we run the '([^']+)' ingester$/, async ingesterString => {
+  defineSupportCode(({Given, When}) => {
+    When('we run the {string} ingester', async function(ingesterString) {
       try {
         const ingester = evalInContext({js: asTemplate(ingesterString), context})
         dbg('when-we-run-the-ingester: ingester=%o', ingester)
@@ -21,29 +22,29 @@ export default function(context) {
       }
     })
 
-    this.When(
-      /^we run the '([^']+)' ingester with environment:$/,
-      async (ingesterString, envString) => {
-        const ingester = evalInContext({js: asTemplate(ingesterString), context})
-        dbg('when-we-run-the-ingester-with-env: ingester=%o', ingester)
-        try {
-          // eslint-disable-next-line no-eval
-          const env = evalInContext({js: envString, context})
-          dbg('env=%o', env)
+    When('we run the {string} ingester with environment:', async function(
+      ingesterString,
+      envString
+    ) {
+      const ingester = evalInContext({js: asTemplate(ingesterString), context})
+      dbg('when-we-run-the-ingester-with-env: ingester=%o', ingester)
+      try {
+        // eslint-disable-next-line no-eval
+        const env = evalInContext({js: envString, context})
+        dbg('env=%o', env)
 
-          _.each(env, (value, key) => setArgDefault({key, value}))
+        _.each(env, (value, key) => setArgDefault({key, value}))
 
-          const result = await requireUncached(ingester).default
-          setState({result})
-          dbg('when-we-run-the-ingester-with-env: result=%o', result)
-        } catch (err) {
-          dbg('caught error=%o', err)
-          throw err
-        }
+        const result = await requireUncached(ingester).default
+        setState({result})
+        dbg('when-we-run-the-ingester-with-env: result=%o', result)
+      } catch (err) {
+        dbg('caught error=%o', err)
+        throw err
       }
-    )
+    })
 
-    this.Given(/^the following initial environment:$/, envString => {
+    Given('the following initial environment:', async function(envString) {
       try {
         const env = evalInContext({js: envString, context})
         dbg('given-env: env=%o', env)
@@ -53,5 +54,5 @@ export default function(context) {
         throw err
       }
     })
-  }
+  })
 }

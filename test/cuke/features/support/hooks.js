@@ -1,15 +1,15 @@
-import debug from 'debug'
-import {getDb} from 'mongo-helpr'
-import {initDb} from 'mongo-test-helpr'
-import {clearArgDefaults} from '@watchmen/helpr'
+import debug from '@watchmen/debug'
+import {defineSupportCode} from 'cucumber'
+import {getDb} from '@watchmen/mongo-helpr'
+import {initDb} from '@watchmen/mongo-test-helpr'
+import {clearArgDefaults} from '@watchmen/helpr/dist/args'
 
-const dbg = debug('test:batch:support:hooks')
+const dbg = debug(__filename)
 
-export default function() {
-  // this === World
-  this.Before(async scenario => {
+defineSupportCode(function({Before}) {
+  Before(async function(testCase) {
     try {
-      dbg('before: scenario=%o', scenario.getName())
+      dbg('before: feature=%o, scenario=%o', testCase.sourceLocation.uri, testCase.pickle.name)
       clearArgDefaults()
       const db = await getDb()
       const result = await initDb(db)
@@ -19,4 +19,4 @@ export default function() {
       throw err
     }
   })
-}
+})

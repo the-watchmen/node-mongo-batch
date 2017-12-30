@@ -12,5 +12,11 @@ module.exports = {
       defaultLimit: 10,
       maxLimit: 200
     }
+  },
+  listener: {
+    port: 3000
+  },
+  geocoder: {
+    provider: 'geocodio'
   }
 }

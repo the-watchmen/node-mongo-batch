@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 import assert from 'assert'
-import debug from 'debug'
-import Timer from 'tymer'
-import geocode from 'geocodr'
-import {sleep, getArg, getRequiredArg, getJsonArg} from '@watchmen/helpr'
-import {getDb, unwind, closeDb} from 'mongo-helpr'
-import {getAddressKeyArray, getGeocoderAdapter} from '../data/helper'
-import constants from '../data/constants'
+import debug from '@watchmen/debug'
+import Timer from '@watchmen/tymer'
+import geocode from '@watchmen/geocodr'
+import {sleep} from '@watchmen/helpr'
+import {getArg, getRequiredArg, getJsonArg} from '@watchmen/helpr/dist/args'
+import {getDb, unwind, closeDb} from '@watchmen/mongo-helpr'
+import {getAddressKeyArray} from '@watchmen/mongo-data'
+// move address-key helpers to geo-helper?
+import {getGeocoderAdapter} from './geo-helper'
+import constants from './constants'
 
-const dbg = debug('app:geocoder')
+const dbg = debug(__filename)
 
 const addressKey = 'addressKey'
 const inputName = getRequiredArg('inputCollection')
