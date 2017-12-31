@@ -32,6 +32,7 @@ export default function({
   steps = [],
   postProcessor,
   isReplace,
+  preIngestHook,
   postIngestHook,
   query
 }) {
@@ -63,6 +64,12 @@ export default function({
       const input = db.collection(_inputName)
       const output = db.collection(_outputName)
 
+      let result
+
+      if (preIngestHook) {
+        result = await preIngestHook({input, output})
+      }
+
       outputIndices &&
         (await createIndices({indices: outputIndices, db, collectionName: _outputName}))
 
@@ -85,7 +92,7 @@ export default function({
 
       dbg('aggregate() steps:\n%s', JSON.stringify(_steps, null, 2))
 
-      let result = await batchData.create({
+      result = await batchData.create({
         data: {
           initiator: path.basename(process.argv[1], '.js'),
           source,
