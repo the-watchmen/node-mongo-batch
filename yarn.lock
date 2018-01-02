@@ -198,6 +198,16 @@
     lodash "^4.17.4"
     mongodb "^3.0.1"
 
+"@watchmen/mongo-helpr@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@watchmen/mongo-helpr/-/mongo-helpr-1.1.0.tgz#6118d3757d93d0e7561d298fe6a749aae74452de"
+  dependencies:
+    "@watchmen/helpr" "^2.2.2"
+    config "^1.29.0"
+    debug "^3.1.0"
+    lodash "^4.17.4"
+    mongodb "^3.0.1"
+
 "@watchmen/mongo-test-helpr@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@watchmen/mongo-test-helpr/-/mongo-test-helpr-1.0.0.tgz#d48602d5de1455fa4be6e33528f2e082cce91380"

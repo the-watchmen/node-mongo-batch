@@ -20,7 +20,7 @@
     "@watchmen/geocodr": "^1.1.9",
     "@watchmen/helpr": "^2.2.2",
     "@watchmen/mongo-data": "^2.0.2",
-    "@watchmen/mongo-helpr": "^1.0.1",
+    "@watchmen/mongo-helpr": "^1.1.0",
     "@watchmen/tymer": "^1.2.4",
     "babel-polyfill": "^6.23.0",
     "config": "^1.29.0",
