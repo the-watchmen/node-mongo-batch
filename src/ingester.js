@@ -1,13 +1,12 @@
 import path from 'path'
-import assert from 'assert'
 import v8 from 'v8'
 import config from 'config'
 import _ from 'lodash'
 import debug from '@watchmen/debug'
 import Timer from '@watchmen/tymer'
-import {pretty, deepClean, stringify} from '@watchmen/helpr'
+import {pretty, deepClean, stringify, assert} from '@watchmen/helpr'
 import {getArg, getJsonArg} from '@watchmen/helpr/dist/args'
-import {getDb, closeDb, createIndices} from '@watchmen/mongo-helpr'
+import {getDb, closeDb, createIndices, drop} from '@watchmen/mongo-helpr'
 import {getData, onlyScanned} from '@watchmen/mongo-data'
 import batchMeta from './entities/batches'
 import batchFailureMeta from './entities/batch-failures'
@@ -65,6 +64,12 @@ export default function({
       const output = db.collection(_outputName)
 
       let result
+
+      if (isReplace && postProcessor) {
+        // manually delete since $out isn't in play
+        result = await drop({collection: output})
+        assert(result, () => `unable to drop collection=${output.collectionName}`)
+      }
 
       if (preIngestHook) {
         result = await preIngestHook({input, output})
@@ -139,7 +144,7 @@ export default function({
             try {
               const result = await postProcessor({output, record, source, date, isThresh})
               // dbg('post-processor result=%j', result)
-              assert(result, `unexpected null result for record=${stringify(record)}`)
+              assert(result, () => `unexpected null result for record=${stringify(record)}`)
               inserted += result.upsertedCount || 0
               updated += result.modifiedCount || 0
               scanned += result.scannedCount || (onlyScanned(result) ? 1 : 0)
