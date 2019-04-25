@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "ava": "cross-env NODE_ENV=auto ava -s test/ava",
-    "ava-debug": "cross-env DEBUG=test:*,lib:* NODE_ENV=auto ava -s",
+    "ava-debug": "cross-env DEBUG=test:*,lib:*,dbg:* NODE_ENV=auto ava -s",
     "pretest": "xo",
     "test": "yarn ava && yarn cuke",
     "prebuild": "yarn test",

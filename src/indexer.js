@@ -21,10 +21,12 @@ export default function({indexMap}) {
         // eslint-disable-next-line no-await-in-loop
         await createIndices({db, collectionName, indices: indexMap[collectionName], drop: true})
       }
-      await closeDb()
     } catch (err) {
       dbg('caught error=%o, exiting...', err)
       throw err
+    } finally {
+      dbg('finally: closing db...')
+      await closeDb()
     }
   }
 }
