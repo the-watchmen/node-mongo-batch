@@ -1,13 +1,13 @@
 {
   "name": "@watchmen/mongo-batch",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "mongo batch stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-batch",
   "license": "ISC",
   "scripts": {
     "ava": "cross-env NODE_ENV=auto ava -s test/ava",
-    "ava-debug": "cross-env DEBUG=test:*,lib:* NODE_ENV=auto ava -s",
+    "ava-debug": "cross-env DEBUG=test:*,lib:*,dbg:* NODE_ENV=auto ava -s",
     "pretest": "xo",
     "test": "yarn ava && yarn cuke",
     "prebuild": "yarn test",

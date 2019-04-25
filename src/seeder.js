@@ -15,7 +15,7 @@ process.on('unhandledRejection', reason => {
 })
 
 export default function({seeders}) {
-  return (async function() {
+  return async function() {
     dbg('starting: config.seeder=%o', config.seeder)
     try {
       for (const seeder of seeders) {
@@ -42,8 +42,12 @@ export default function({seeders}) {
           }
         }
       }
+    } catch (err) {
+      dbg('caught error=%o, exiting...', err)
+      throw err
     } finally {
+      dbg('finally: closing db...')
       await closeDb()
     }
-  })()
+  }
 }

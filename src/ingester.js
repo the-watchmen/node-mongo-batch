@@ -237,13 +237,14 @@ export default function({
       })
       assert(result.result.ok, 'ok required')
 
-      await closeDb()
-
       return metrics
     } catch (err) {
       dbg('connect: caught=%o', err)
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1)
+    } finally {
+      dbg('finally: closing db...')
+      await closeDb()
     }
   }
 }
