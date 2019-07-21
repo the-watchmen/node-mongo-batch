@@ -1,5 +1,5 @@
 import constants from '../constants'
 
 export default {
-  collectionName: constants.GEO_ADDRESSES
+	collectionName: constants.GEO_ADDRESSES
 }

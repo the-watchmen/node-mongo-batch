@@ -9,45 +9,45 @@ import {closeDb} from '@watchmen/mongo-helpr'
 const dbg = debug(__filename)
 
 process.on('unhandledRejection', reason => {
-  // eslint-disable-next-line no-console
-  console.log('unhandled-rejection: reason=%o', reason)
-  process.exit(1)
+	console.log('unhandled-rejection: reason=%o', reason)
+	process.exit(1)
 })
 
 export default function({seeders}) {
-  return async function() {
-    dbg('starting: config.seeder=%o', config.seeder)
-    try {
-      for (const seeder of seeders) {
-        const meta = seeder.meta
-        const name = getName(meta)
-        const count = _.get(config.seeder, `${name}.count`, 100)
-        const thresh = _.get(config.seeder, `${name}.thresh`, 100)
-        dbg('seeding: name=%o, count=%o, thresh=%o', name, count, thresh)
-        const timer = new Timer(`seeder(${name})`)
-        assert(meta, 'meta required')
-        const dao = getData(meta)
-        assert(dao, 'dao required')
-        const generate = seeder.generate
-        assert(generate, 'generate required')
-        for (let i = 1; i <= count; i++) {
-          timer.lap()
-          const {data, context} = generate({index: i})
-          const instance = await dao.create({data, context})
-          instance.result.ok || dbg('instance=%o', instance)
-          assert(instance.result.ok)
-          if (i % thresh === 0) {
-            dbg(timer.toString())
-            dbg('last-record=%o', data)
-          }
-        }
-      }
-    } catch (err) {
-      dbg('caught error=%o, exiting...', err)
-      throw err
-    } finally {
-      dbg('finally: closing db...')
-      await closeDb()
-    }
-  }
+	return async function() {
+		dbg('starting: config.seeder=%o', config.seeder)
+		try {
+			for (const seeder of seeders) {
+				const {meta} = seeder
+				const name = getName(meta)
+				const count = _.get(config.seeder, `${name}.count`, 100)
+				const thresh = _.get(config.seeder, `${name}.thresh`, 100)
+				dbg('seeding: name=%o, count=%o, thresh=%o', name, count, thresh)
+				const timer = new Timer(`seeder(${name})`)
+				assert(meta, 'meta required')
+				const dao = getData(meta)
+				assert(dao, 'dao required')
+				const {generate} = seeder
+				assert(generate, 'generate required')
+				for (let i = 1; i <= count; i++) {
+					timer.lap()
+					const {data, context} = generate({index: i})
+					// eslint-disable-next-line no-await-in-loop
+					const instance = await dao.create({data, context})
+					instance.result.ok || dbg('instance=%o', instance)
+					assert(instance.result.ok)
+					if (i % thresh === 0) {
+						dbg(timer.toString())
+						dbg('last-record=%o', data)
+					}
+				}
+			}
+		} catch (error) {
+			dbg('caught error=%o, exiting...', error)
+			throw error
+		} finally {
+			dbg('finally: closing db...')
+			await closeDb()
+		}
+	}
 }
