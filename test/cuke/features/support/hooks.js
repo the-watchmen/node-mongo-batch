@@ -6,17 +6,17 @@ import {clearArgDefaults} from '@watchmen/helpr/dist/args'
 
 const dbg = debug(__filename)
 
-defineSupportCode(function({Before}) {
-  Before(async function(testCase) {
-    try {
-      dbg('before: feature=%o, scenario=%o', testCase.sourceLocation.uri, testCase.pickle.name)
-      clearArgDefaults()
-      const db = await getDb()
-      const result = await initDb(db)
-      dbg('before: init-db result=%o', result)
-    } catch (err) {
-      dbg('before: caught=%o', err)
-      throw err
-    }
-  })
+defineSupportCode(({Before}) => {
+	Before(async testCase => {
+		try {
+			dbg('before: feature=%o, scenario=%o', testCase.sourceLocation.uri, testCase.pickle.name)
+			clearArgDefaults()
+			const db = await getDb()
+			const result = await initDb(db)
+			dbg('before: init-db result=%o', result)
+		} catch (error) {
+			dbg('before: caught=%o', error)
+			throw error
+		}
+	})
 })
